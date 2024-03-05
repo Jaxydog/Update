@@ -29,3 +29,4 @@ function section() {
 }
 
 section "apt" "sudo apt update" "sudo apt upgrade -qy" "sudo apt autoremove -qy"
+section "rust" "rustup self update" "rustup upgrade"
