@@ -10,6 +10,14 @@ This script automatically updates:
 
 This is intended to be as easy as possible to extend. If an update 'group' is not listed here, it should be easy to add.
 
+### Usage
+
+Currently, Update does not have any command-line flags. They may be added later on if deemed necessary.
+
+```sh
+$ ./src/update.sh
+```
+
 ### License
 
 Update is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
