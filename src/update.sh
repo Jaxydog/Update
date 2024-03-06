@@ -17,6 +17,7 @@ reset="${escape}0m"
 highlight_gray="${escape}0;100m"
 highlight_green="${escape}0;42m"
 highlight_red="${escape}0;41m"
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
 function header() {
     echo -e "$highlight_gray$*$reset\n"
@@ -52,5 +53,5 @@ section 'apt' 'sudo apt update -q' 'sudo apt upgrade -qy' 'sudo apt autoremove -
 section 'rust' 'rustup self update' 'rustup upgrade'
 section 'snap' 'sudo snap refresh'
 section 'tldr' 'tldr --update'
-section 'gradle' './update-gradle.sh'
+section 'gradle' "$script_dir/update-gradle.sh"
 
