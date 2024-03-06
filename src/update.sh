@@ -19,13 +19,13 @@ highlight_green="${escape}0;42m"
 highlight_red="${escape}0;41m"
 
 function header() {
-    echo -e "$highlight_gray$1$reset\n"
+    echo -e "$highlight_gray$*$reset\n"
 }
 function success() {
-    echo -e "$highlight_green$1$reset\n"
+    echo -e "$highlight_green$*$reset\n"
 }
 function failure() {
-    echo -e "$highlight_red$1$reset\n"
+    echo -e "$highlight_red$*$reset\n"
 }
 
 function section() {
