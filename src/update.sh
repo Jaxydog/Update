@@ -12,14 +12,20 @@
 #
 # You should have received a copy of the GNU General Public License along with Update. If not, see <https://www.gnu.org/licenses/>.
 
+escape="\x1b["
+reset="${escape}0m"
+highlight_gray="${escape}0;100m"
+highlight_green="${escape}0;42m"
+highlight_red="${escape}0;41m"
+
 function header() {
-    echo -e "\033[0;100m$1\033[0m\n"
+    echo -e "$highlight_gray$1$reset\n"
 }
 function success() {
-    echo -e "\033[0;42m$1\033[0m\n"
+    echo -e "$highlight_green$1$reset\n"
 }
 function failure() {
-    echo -e "\033[0;41m$1\033[0m\n"
+    echo -e "$highlight_red$1$reset\n"
 }
 
 function section() {
