@@ -12,7 +12,7 @@
 #
 # You should have received a copy of the GNU General Public License along with Update. If not, see <https://www.gnu.org/licenses/>.
 
-escape="\x1b["
+escape='\x1b['
 reset="${escape}0m"
 highlight_gray="${escape}0;100m"
 highlight_green="${escape}0;42m"
@@ -48,7 +48,9 @@ function section() {
     return 0
 }
 
-section "apt" "sudo apt update -q" "sudo apt upgrade -qy" "sudo apt autoremove -qy"
-section "rust" "rustup self update" "rustup upgrade"
-section "snap" "sudo snap refresh"
-section "tldr" "tldr --update"
+section 'apt' 'sudo apt update -q' 'sudo apt upgrade -qy' 'sudo apt autoremove -qy'
+section 'rust' 'rustup self update' 'rustup upgrade'
+section 'snap' 'sudo snap refresh'
+section 'tldr' 'tldr --update'
+section 'gradle' './update-gradle.sh'
+

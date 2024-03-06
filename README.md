@@ -7,6 +7,7 @@ This script automatically updates:
 - `rustup` itself, and installed toolchains.
 - `snap` projects.
 - `tldr` cache.
+- A global [Gradle](https://gradle.org) installation.
 
 This is intended to be as easy as possible to extend. If an update 'group' is not listed here, it should be easy to add.
 
