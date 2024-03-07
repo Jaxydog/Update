@@ -35,6 +35,8 @@ function section() {
     for ((index = 2; index <= $#; index++)); do
         command="${!index}"
 
+        echo -e "> $command\n"
+
         if ! $command; then
             failure "Failed to update '$1'"
 
