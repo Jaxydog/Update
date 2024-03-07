@@ -5,6 +5,7 @@ My update script, intended for Ubuntu 22.04.
 This script automatically updates:
 - `apt` packages (with `autoremove -y`).
 - `rustup` itself, and installed toolchains.
+- Installed `cargo` applications.
 - `snap` projects.
 - `tldr` cache.
 - A global [Gradle](https://gradle.org) installation.

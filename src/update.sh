@@ -51,6 +51,7 @@ function section() {
 
 section 'apt' 'sudo apt update -q' 'sudo apt upgrade -qy' 'sudo apt autoremove -qy'
 section 'rust' 'rustup self update' 'rustup upgrade'
+section 'cargo' 'cargo install-update -ag'
 section 'snap' 'sudo snap refresh'
 section 'tldr' 'tldr --update'
 section 'gradle' "$script_dir/update-gradle.sh"
