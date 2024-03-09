@@ -17,16 +17,17 @@ reset="${escape}0m"
 highlight_gray="${escape}0;100m"
 highlight_green="${escape}0;42m"
 highlight_red="${escape}0;41m"
+italics="${escape}3m"
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 
 function header() {
-    echo -e "$highlight_gray$*$reset\n"
+    echo -e "$highlight_gray $* $reset\n"
 }
 function success() {
-    echo -e "$highlight_green$*$reset\n"
+    echo -e "$highlight_green $* $reset\n"
 }
 function failure() {
-    echo -e "$highlight_red$*$reset\n"
+    echo -e "$highlight_red $* $reset\n"
 }
 
 function section() {
@@ -35,7 +36,7 @@ function section() {
     for ((index = 2; index <= $#; index++)); do
         command="${!index}"
 
-        echo -e "> $command\n"
+        echo -e "$italics> $command$reset\n"
 
         if ! $command; then
             failure "Failed to update '$1'!"
