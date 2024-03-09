@@ -12,6 +12,11 @@
 #
 # You should have received a copy of the GNU General Public License along with Update. If not, see <https://www.gnu.org/licenses/>.
 
+function fail() {
+    echo "Unable to update Gradle."
+    exit $1
+}
+
 function install() {
     echo -e "Installing Gradle '$1'...\n"
 
@@ -34,22 +39,19 @@ function install() {
     gradle="gradle-$1"
 
     if ! wget -q "$download_url"; then
-        echo "Unable to update Gradle."
-        exit $?
+        fail $?
     fi
 
     echo 'Unzipping...'
 
     if ! unzip -q "./$gradle-bin.zip"; then
-        echo "Unable to update Gradle."
-        exit $?
+        fail $?
     fi
 
     echo "Installing..."
 
     if ! sudo cp -a "./$gradle/." "$output"; then
-        echo "Unable to update Gradle."
-        exit $?
+        fail $?
     fi
 
     echo "Cleaning up..."
