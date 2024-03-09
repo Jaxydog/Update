@@ -30,7 +30,7 @@ function failure() {
 }
 
 function section() {
-    header "Updating '$1'"
+    header "Updating '$1'..."
 
     for ((index = 2; index <= $#; index++)); do
         command="${!index}"
@@ -38,7 +38,7 @@ function section() {
         echo -e "> $command\n"
 
         if ! $command; then
-            failure "Failed to update '$1'"
+            failure "Failed to update '$1'!"
 
             return $?
         fi
@@ -46,7 +46,7 @@ function section() {
         echo ""
     done
 
-    success "Successfully updated '$1'"
+    success "Successfully updated '$1'."
 
     return 0
 }
