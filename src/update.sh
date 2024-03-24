@@ -19,6 +19,12 @@ highlight_green="${escape}0;42m"
 highlight_red="${escape}0;41m"
 italics="${escape}3m"
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
+pin_file="$HOME/.update_pinned"
+pinned=""
+
+if [[ -f "$pin_file" ]]; then
+    pinned=$(cat "$pin_file")
+fi
 
 function header() {
     echo -e "$highlight_gray $* $reset\n"
@@ -32,6 +38,12 @@ function failure() {
 
 function section() {
     header "Updating '$1'..."
+
+    if [[ -n "$pinned" && "$pinned" == *"$1"* ]]; then
+        success "Section '$1' is pinned."
+        
+        return 0
+    fi
 
     for ((index = 2; index <= $#; index++)); do
         command="${!index}"
