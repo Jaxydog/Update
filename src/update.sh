@@ -20,7 +20,7 @@ highlight_red="${escape}0;41m"
 highlight_blue="${escape}0;46m"
 italics="${escape}3m"
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
-pin_file="$HOME/.update_pinned"
+pin_file="$HOME/.config/update_pinned"
 pinned=""
 
 if [[ -f "$pin_file" ]]; then
@@ -44,7 +44,7 @@ function section() {
     header "Updating '$1'..."
 
     if [[ -n "$pinned" && "$pinned" == *"$1"* ]]; then
-        echo -e "This section is pinned.\nTo edit pinned sections, edit the '~/.update_pinned' file.\n"
+        echo -e "This section is pinned.\nTo edit pinned sections, edit '$pin_file'.\n"
 
         pinned "Section '$1' is pinned."
         
