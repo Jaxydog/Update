@@ -19,6 +19,7 @@ highlight_green="${escape}0;42m"
 highlight_red="${escape}0;41m"
 highlight_blue="${escape}0;46m"
 italics="${escape}3m"
+
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
 pin_file="$HOME/.config/update_pinned"
 pinned=""
