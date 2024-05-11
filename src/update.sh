@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 # Copyright © 2024 Jaxydog
+# Copyright © 2024 RemasteredArch
 #
 # This file is part of Update.
 #
@@ -12,61 +13,83 @@
 #
 # You should have received a copy of the GNU General Public License along with Update. If not, see <https://www.gnu.org/licenses/>.
 
-escape='\x1b['
-reset="${escape}0m"
-highlight_gray="${escape}0;100m"
-highlight_green="${escape}0;42m"
-highlight_red="${escape}0;41m"
-highlight_blue="${escape}0;46m"
-italics="${escape}3m"
+set_color() {
+    color_name="$1"
+    ansi_control_code="$2"
+
+    colors[$color_name]="\e[${ansi_control_code}m"
+
+    unset color_name ansi_control_code
+}
+
+declare -A colors
+set_color reset 0
+set_color bold 1
+set_color italics 3
+set_color black 30
+set_color white 97
+set_color highlight_gray 100
+set_color highlight_green 42
+set_color highlight_red 41
+set_color highlight_blue 46
+
+unset set_color
 
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null && pwd)
-pin_file="$HOME/.config/update_pinned"
+pin_file="${XDG_CONFIG_HOME:-"$HOME/.config"}/update/pinned"
 pinned=""
 
-if [[ -f "$pin_file" ]]; then
-    pinned=$(cat "$pin_file")
-fi
+[ -f "$pin_file" ] && pinned=$(cat "$pin_file")
+
+function message() {
+    highlight_color="$1"
+    text_color="$2"
+    shift 2
+
+    echo -e "\n${colors[$highlight_color]}${colors[$text_color]} $* ${colors[reset]}\n"
+
+    unset highlight_color text_color
+}
 
 function header() {
-    echo -e "$highlight_gray $* $reset\n"
+    message "highlight_gray" "white" "$*"
 }
 function success() {
-    echo -e "$highlight_green $* $reset\n"
+    message "highlight_green" "black" "$*"
 }
 function failure() {
-    echo -e "$highlight_red $* $reset\n"
+    message "highlight_red" "black" "$*"
 }
 function pinned() {
-    echo -e "$highlight_blue $* $reset\n"
+    message "highlight_blue" "black" "$*"
 }
 
 function section() {
-    header "Updating '$1'..."
+    name="$1"
+    shift
 
-    if [[ -n "$pinned" && "$pinned" == *"$1"* ]]; then
-        echo -e "This section is pinned.\nTo edit pinned sections, edit '$pin_file'.\n"
+    header "Updating '$name'..."
 
-        pinned "Section '$1' is pinned."
+    [ -n "$pinned" ] && [[ "$pinned" == *"$name"* ]] && {
+        echo -e "To edit pinned sections, edit '$pin_file'."
+
+        pinned "Section '$name' is pinned."
         
         return 0
-    fi
+    }
 
-    for ((index = 2; index <= $#; index++)); do
-        command="${!index}"
+    for command in "$@"; do
+        echo -e "> ${colors[italics]}$command${colors[reset]}\n"
 
-        echo -e "$italics> $command$reset\n"
+        $command || {
+            exit_code=$?
+            failure "Failed to update '$name'!"
 
-        if ! $command; then
-            failure "Failed to update '$1'!"
-
-            return $?
-        fi
-
-        echo ""
+            return $exit_code
+        }
     done
 
-    success "Successfully updated '$1'."
+    success "Successfully updated '$name'."
 
     return 0
 }
@@ -77,4 +100,3 @@ section 'cargo' 'cargo install-update -ag'
 section 'snap' 'sudo snap refresh'
 section 'tldr' 'tldr --update'
 section 'gradle' "$script_dir/update-gradle.sh"
-

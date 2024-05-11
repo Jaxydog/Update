@@ -6,6 +6,7 @@ This script automatically updates:
 - `apt` packages (with `autoremove -y`).
 - `rustup` itself, and installed toolchains.
 - Installed `cargo` applications.
+    - Updated with [cargo-update](https://crates.io/crates/cargo-update).
 - `snap` projects.
 - `tldr` cache.
 - A global [Gradle](https://gradle.org) installation.
@@ -20,7 +21,7 @@ Currently, Update does not have any command-line flags. They may be added later 
 $ ./src/update.sh
 ```
 
-You may 'pin' specific sections by inserting their names into the `~/.update_pinned` file, like so:
+You may 'pin' specific sections by inserting their names into `$XDG_CONFIG_HOME/update/pinned` (default `~/.config/update/pinned`), like so:
 
 ```
 snap
