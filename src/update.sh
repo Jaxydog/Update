@@ -42,13 +42,11 @@ pinned=""
 [ -f "$pin_file" ] && pinned=$(cat "$pin_file")
 
 function message() {
-    highlight_color="$1"
-    text_color="$2"
+    local highlight_color="$1"
+    local text_color="$2"
     shift 2
 
     echo -e "\n${colors[$highlight_color]}${colors[$text_color]} $* ${colors[reset]}\n"
-
-    unset highlight_color text_color
 }
 
 function header() {
@@ -65,7 +63,7 @@ function pinned() {
 }
 
 function section() {
-    name="$1"
+    local name="$1"
     shift
 
     header "Updating '$name'..."
@@ -82,7 +80,7 @@ function section() {
         echo -e "> ${colors[italics]}$command${colors[reset]}\n"
 
         $command || {
-            exit_code=$?
+            local exit_code=$?
             failure "Failed to update '$name'!"
 
             return $exit_code
