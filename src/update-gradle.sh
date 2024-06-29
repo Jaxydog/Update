@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 # Copyright © 2024 Jaxydog
+# Copyright © 2024 RemasteredArch
 #
 # This file is part of Update.
 #
@@ -14,17 +15,19 @@
 
 function fail() {
     echo "Unable to update Gradle."
+
+    # shellcheck disable=SC2086
     exit $1
 }
 
 function install() {
     echo -e "Installing Gradle '$1'...\n"
 
-    output='/opt/gradle'
+    local output='/opt/gradle'
 
     echo "Be sure to add the following environment variables:"
     echo "- GRADLE_HOME=\"$output\""
-    echo -e "- PATH=\"$output/bin\"\n"
+    echo -e "- PATH=\"$output/bin:\$PATH\"\n"
 
     # Ensure the directory exists and is empty.
     if [[ ! -d "$output" ]]; then
@@ -35,24 +38,18 @@ function install() {
 
     echo 'Downloading latest zip...'
 
-    download_url=$(echo "$2" | jq -r .downloadUrl)
-    gradle="gradle-$1"
+    local download_url=$(echo "$2" | jq --raw-output .downloadUrl)
+    local gradle="gradle-$1"
 
-    if ! wget -q "$download_url"; then
-        fail $?
-    fi
+    wget -q "$download_url" || fail $?
 
     echo 'Unzipping...'
 
-    if ! unzip -q "./$gradle-bin.zip"; then
-        fail $?
-    fi
+    unzip -q "./$gradle-bin.zip" || fail $?
 
     echo "Installing..."
 
-    if ! sudo cp -a "./$gradle/." "$output"; then
-        fail $?
-    fi
+    sudo cp -a "./$gradle/." "$output" || fail $?
 
     echo "Cleaning up..."
 
@@ -63,10 +60,11 @@ function install() {
     exit 0
 }
 
+
 echo -e 'Checking for latest version...\n'
 
-response=$(curl -s 'https://services.gradle.org/versions/current')
-latest_version=$(echo "$response" | jq -r .version)
+response=$(curl --silent 'https://services.gradle.org/versions/current')
+latest_version=$(echo "$response" | jq --raw-output .version)
 
 echo "Latest version: '$latest_version'"
 
@@ -77,7 +75,7 @@ if [[ $installed ]]; then
 
     echo -e "Installed version: '$installed_version'\n"
 
-    if [[ $installed_version == $latest_version ]]; then
+    if [[ $installed_version == "$latest_version" ]]; then
         echo "Gradle is up to date ('$installed_version' == '$latest_version')!"
         exit 0
     else
@@ -86,9 +84,9 @@ if [[ $installed ]]; then
 
         # Ignore casing
         read -n 1 should_install
-        should_install=$(echo "$should_install" | awk '{print tolower($0)}')
+        should_install=${should_install,,}
 
-        echo ''
+        echo
 
         if [[ "$should_install" == 'y' ]]; then
             echo ''
@@ -101,12 +99,12 @@ else
 
     # Ignore casing
     read -n 1 should_install
-    should_install=$(echo "$should_install" | awk '{print tolower($0)}')
+    should_install=${should_install,,}
 
-    echo ''
+    echo
 
-    if [[ "$should_install" == 'y' ]]; then
-        echo ''
+    [[ "$should_install" == 'y' ]] && {
+        echo
         install "$latest_version" "$response"
-    fi
+    }
 fi
