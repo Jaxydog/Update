@@ -9,7 +9,7 @@ This script automatically updates:
     - Updated with [cargo-update](https://crates.io/crates/cargo-update).
 - `snap` projects.
 - `tldr` cache.
-- A global [Gradle](https://gradle.org) installation.
+- A global [Gradle](https://gradle.org) installation (installs to `/opt/gradle/`).
 
 This is intended to be as easy as possible to extend. If an update 'group' is not listed here, it should be easy to add.
 
