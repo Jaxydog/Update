@@ -14,12 +14,10 @@
 # You should have received a copy of the GNU General Public License along with Update. If not, see <https://www.gnu.org/licenses/>.
 
 function set_color() {
-    color_name="$1"
-    ansi_control_code="$2"
+    local color_name="$1"
+    local ansi_control_code="$2"
 
     colors[$color_name]="\e[${ansi_control_code}m"
-
-    unset color_name ansi_control_code
 }
 
 declare -A colors
