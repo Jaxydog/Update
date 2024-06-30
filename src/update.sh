@@ -13,7 +13,7 @@
 #
 # You should have received a copy of the GNU General Public License along with Update. If not, see <https://www.gnu.org/licenses/>.
 
-set_color() {
+function set_color() {
     color_name="$1"
     ansi_control_code="$2"
 
@@ -23,6 +23,7 @@ set_color() {
 }
 
 declare -A colors
+
 set_color reset 0
 set_color bold 1
 set_color italics 3
@@ -50,16 +51,16 @@ function message() {
 }
 
 function header() {
-    message "highlight_gray" "white" "$*"
+    message 'highlight_gray' 'white' "$*"
 }
 function success() {
-    message "highlight_green" "black" "$*"
+    message 'highlight_green' 'black' "$*"
 }
 function failure() {
-    message "highlight_red" "black" "$*"
+    message 'highlight_red' 'black' "$*"
 }
 function pinned() {
-    message "highlight_blue" "black" "$*"
+    message 'highlight_blue' 'black' "$*"
 }
 
 function section() {
