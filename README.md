@@ -1,5 +1,7 @@
 # Update
 
+> NOTE: This is now superseded by my [Scripts](https://github.com/Jaxydog/Scripts) repository.
+
 My update script, intended for Ubuntu 22.04.
 
 This script automatically updates:
